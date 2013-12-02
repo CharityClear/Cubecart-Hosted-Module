@@ -1,0 +1,2 @@
+Cubecart-Hosted-Module
+======================
