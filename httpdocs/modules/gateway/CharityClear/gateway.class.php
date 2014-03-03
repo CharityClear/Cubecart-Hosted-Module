@@ -13,7 +13,7 @@ class Gateway {
 
 	public function transfer() {
 		$transfer	= array(
-			'action'	=> (filter_var($this->_module['payment_page_url'], FILTER_VALIDATE_URL)) ? $this->_module['payment_page_url'] : 'https://gateway.charityclear.com/hosted/',
+			'action'	=> (filter_var($this->_module['payment_page_url'], FILTER_VALIDATE_URL)) ? $this->_module['payment_page_url'] : 'https://gateway.charityclear.com/paymentform/',
 			'method'	=> 'post',
 			'target'	=> '_self',
 			'submit'	=> 'auto',
@@ -89,7 +89,9 @@ class Gateway {
             $check = $_POST;
             unset($check['signature']);
             ksort($check);
-            $sig_check = ($_POST['signature'] == hash("SHA512", http_build_query($check) . $this->_module['merchant_passphrase']));
+            $build_query =  http_build_query($check, '', '&');
+            $build_query = preg_replace('/%0D%0A|%0A%0D|%0A|%0D/i', '%0A', $build_query);
+            $sig_check = ($_POST['signature'] == hash("SHA512", $build_query. $this->_module['merchant_passphrase']));
         }else{
             $sig_check = true;
         }
@@ -98,7 +100,7 @@ class Gateway {
 			$order->orderStatus(Order::ORDER_PROCESS, $cart_order_id);
 			$order->paymentStatus(Order::PAYMENT_SUCCESS, $cart_order_id);
 		}
-		
+		$transData = array();
 		$transData['notes']			= $sig_check == true ? 'response signature check verified' : 'response signature check failed';
 		$transData['gateway']		= 'CharityClear';
 		$transData['order_id']		= $_POST['orderRef'];
