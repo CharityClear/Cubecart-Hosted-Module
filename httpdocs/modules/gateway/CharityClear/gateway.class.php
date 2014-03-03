@@ -100,7 +100,7 @@ class Gateway {
 			$order->orderStatus(Order::ORDER_PROCESS, $cart_order_id);
 			$order->paymentStatus(Order::PAYMENT_SUCCESS, $cart_order_id);
 		}
-		$transData = array();
+		
 		$transData['notes']			= $sig_check == true ? 'response signature check verified' : 'response signature check failed';
 		$transData['gateway']		= 'CharityClear';
 		$transData['order_id']		= $_POST['orderRef'];
@@ -111,8 +111,11 @@ class Gateway {
 		$transData['extra']			= '';
 		$order->logTransaction($transData);
 		
+		 $url = explode('/modules/gateway/CharityClear',$GLOBALS['storeURL']);
+
+        	httpredir($url[0].'/index.php?_a=complete');
 		// ccNow doesn't send back any data at all right now so we have to leave it pending
-		httpredir(currentPage(array('_g', 'type', 'cmd', 'module'), array('_a' => 'complete')));
+		//httpredir(currentPage(array('_g', 'type', 'cmd', 'module'), array('_a' => 'complete')));
 		return false;
 	}
 
