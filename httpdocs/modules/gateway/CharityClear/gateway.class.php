@@ -105,7 +105,7 @@ class Gateway {
 		$transData['gateway']		= 'CharityClear';
 		$transData['order_id']		= $_POST['orderRef'];
 		$transData['trans_id']		= $_POST['xref'];
-		$transData['amount']		= ($_POST['amountReceived']>0) ? ($_POST['amountReceived']/10) : '';
+		$transData['amount']		= ($_POST['amountReceived']>0) ? ($_POST['amountReceived']/100) : '';
 		$transData['status']		= $_POST['responseMessage'];
 		$transData['customer_id']	= $order_summary['customer_id'];
 		$transData['extra']			= '';
@@ -113,6 +113,7 @@ class Gateway {
 		
 		// ccNow doesn't send back any data at all right now so we have to leave it pending
 		httpredir(currentPage(array('_g', 'type', 'cmd', 'module'), array('_a' => 'complete')));
+		return false;
 	}
 
 	public function form() {
