@@ -53,7 +53,7 @@ class Gateway {
             'type' => 1,
 			'transactionUnique' => md5($this->_basket['cart_order_id'].time()),
 			'orderRef' => $this->_basket['cart_order_id'],
-			'redirectURL' => $GLOBALS['storeURL'].'/modules/gateway/CharityClear/response_process.php',
+			'redirectURL' => $GLOBALS['storeURL'].'/index.php?_g=rm&type=gateway&cmd=process&module=CharityClear',
             'customerAddress' => $address,
 			'customerPostCode' => $this->_basket['billing_address']['postcode'],
 			'customerEmail' => $this->_basket['billing_address']['email'],
